@@ -99,18 +99,73 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 	}
 	
 	/**
+	 * isWin() : vérifie si la partie est gagnée
+	 * On vérifie pour chacune des Cellules présentes (sauf les Mines) si elles sont cliquées ou non
+	 * Si elles sont toutes cliquées -> partie gagnée
+	 */
+	fun isWin() : kotlin.Boolean {
+		var ret : kotlin.Boolean = true
+		
+		for(posX in 0..this.sizeX - 1) {
+			for(posY in 0..this.sizeY - 1) {
+				var cell = mines.get(posX)?.get(posY)
+				if(cell != null) {
+					if(cell.toPrint != "*" && !cell.visible) {
+						ret = false
+					}
+				}
+			}
+		}
+		
+		return ret
+	}
+	
+	/**
+	 * isLost() : vérifie si la partie est perdue
+	 * On vérifie pour chacune des mines présentes si elles sont cliquées ou non
+	 * Si une mine est cliquée -> partie perdue
+	 */
+	fun isLost() : kotlin.Boolean {
+		var ret : kotlin.Boolean = false
+		
+		for(posX in 0..this.sizeX - 1) {
+			for(posY in 0..this.sizeY - 1) {
+				var cell = mines.get(posX)?.get(posY)
+				if(cell != null) {
+					if(cell.toPrint == "*" && cell.visible) {
+						ret = true
+					}
+				}
+			}
+		}
+		
+		return ret
+	}
+	
+	/**
 	 * toString() : réécriture de la fonction toString
 	 * Affiche une copie du plateau
 	 */
 	override fun toString() : String {
+		
 		// Parcours du plateau
 		for(posX in 0..this.sizeX-1) {
 			for(posY in 0..this.sizeY - 1) {
 				print("|")
-				// Affichage de la Cellule
-				print(mines.get(posX)?.get(posY)?.toPrint)	
+				
+				var cell = mines.get(posX)?.get(posY)
+				
+				// Affichage de l a Cellule
+				if(cell != null) {
+					if(cell.visible) {
+						print(cell.toPrint)
+					} else {
+						print(" ")
+					}
+				}
 				print("|")
 			}
+			
 			// Retour charriot une fois la ligne finie
 			println()
 		}
