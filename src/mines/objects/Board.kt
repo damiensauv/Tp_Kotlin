@@ -207,8 +207,10 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 			}
 			
 			// Retour charriot une fois la ligne finie
-			println()
+			println(" ".plus(posX));
 		}
+		println()
+		println(" 0  1  2  3  4  5  6  7 ")
 		return "";
 	}
 }
