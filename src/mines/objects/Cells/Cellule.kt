@@ -18,7 +18,7 @@ abstract class Cellule {
 class Vide (
 	override var posX : kotlin.Int,
 	override var posY : kotlin.Int,
-	override var toPrint : kotlin.String = " "
+	override var toPrint : kotlin.String = "-"
 ) : Cellule()
 
 /**

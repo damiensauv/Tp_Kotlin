@@ -155,10 +155,15 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 		val cell : Cellule? = mines.get(posX)?.get(posY)
 		
 		// On la rend visible
+		if(cell != null) {
+			if(cell.visible) 
+				return
+		}
+		
 		cell?.visible = true;
 		
 		// Dans le cas où c'est un Vide, on ouvre les cases voisines dans le tableau
-		if(cell?.toPrint == " ") {
+		if(cell?.toPrint == "-") {
 			for(x in posX - 1..posX + 1) {
 				for(y in posY - 1..posY + 1) {
 					

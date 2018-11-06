@@ -5,10 +5,11 @@ import java.util.Scanner
 
 fun main(args: Array<String>) {
 	val b : Board = Board(8, 8)
-	b.toString()
-	println()
 	
 	while(!b.isWin() || !b.isLost()) {
+		b.toString()
+		println()
+		
 		println("Quelle case à ouvrir ?")
 		
 		val sc = Scanner(System.`in`)
@@ -26,13 +27,21 @@ fun main(args: Array<String>) {
 		}
 		
 		println()
-		//b.clickCellule(inputX, inputY)
+		b.clickCellule(inputX, inputY)
 		
 		if(b.isWin()) {
 			println("Bravo !")
+			
+			println()
+			println()
+			b.toString()
 			break;
 		} else if(b.isLost()) {
 			println("Perdu !")
+			
+			println()
+			println()
+			b.toString()	
 			break;
 		}
 	}
