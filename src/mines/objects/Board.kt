@@ -51,7 +51,16 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 				
 				// Si la Cellule est de type Nombre
 				if(table.get(x)?.get(y)?.toPrint == "0") {
-					computeVoisins(x, y)
+					val nbVoisins : kotlin.Int = computeVoisins(x, y)
+					
+					// On vÃ©rifie le nombre de Mines voisines
+					if(nbVoisins == 0) {
+						// Si il n'y en a pas, on passe la Cellule en Vide
+						mines.get(x)?.set(y, Vide(x, y))
+					} else {
+						// Si il y en a, on change le nombre de voisins du Nombre
+						mines.get(x)?.set(y, Nombre(x, y, nbVoisins.toString()))
+					}
 				}
 			}
 		}
@@ -69,7 +78,7 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 	 * M X C
 	 * C C M --> computeVoisins = 4
 	 */
-	fun computeVoisins(posX : kotlin.Int, posY : kotlin.Int) {
+	fun computeVoisins(posX : kotlin.Int, posY : kotlin.Int) : kotlin.Int{
 		var nbMines : kotlin.Int = 0;
 		
 		// Visite des Cellules voisines (posX - 1 -> posX + 1 & posY - 1 -> posY + 1)
@@ -86,16 +95,45 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 					}
 				}
 			}
-		} 
-		
-		// On vÃ©rifie le nombre de Mines voisines
-		if(nbMines == 0) {
-			// Si il n'y en a pas, on passe la Cellule en Vide
-			mines.get(posX)?.set(posY, Vide(posX, posY))
-		} else {
-			// Si il y en a, on change le nombre de voisins du Nombre
-			mines.get(posX)?.set(posY, Nombre(posX, posY, nbMines.toString()))
 		}
+		
+		return nbMines;
+	}
+	
+	/**
+	 * computeFlags(posX : int, posY : int) : calcul le nombre de drapeaux sur les cases voisines
+	 * On regarde sur les cases voisines si le Cellule.flag est à true
+	 *
+	 * Exemple (X = case Ã©tudiÃ©e, ! = Flag)
+	 *
+	 * !   !
+	 * ! 4  
+	 *     ! --> computeFlags = 4
+	 */
+	fun computeFlags(posX : kotlin.Int, posY : kotlin.Int) : kotlin.Int{
+		var nbFlags : kotlin.Int = 0;
+		
+		// Visite des Cellules voisines (posX - 1 -> posX + 1 & posY - 1 -> posY + 1)
+		for(x in posX-1..posX+1) {
+			for(y in posY-1..posY+1) {
+				
+				// Si la Cellule n'est pas dans le tableau, on continue
+				if(x < 0 || x >= this.sizeX || y < 0 || y >= this.sizeY) {
+					continue
+				} else {
+					// Si la Cellule est dans le tableau, et est flag
+					val mine = mines.get(x)?.get(y)
+					
+					if(mine != null) {
+						if(mine.flag) {
+							nbFlags++
+						}
+					}
+				}
+			}
+		}
+		
+		return nbFlags;
 	}
 	
 	/**
@@ -143,6 +181,36 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 	}
 	
 	/**
+	 * openVoisins(posX : int, posY : int) : Ouverture des cases voisines d'une Cellule
+	 * On ouvre toutes les cases autour de la Cellule aux coordonées posX, posY
+	 */
+	fun openVoisins(posX : kotlin.Int, posY : kotlin.Int) {
+		for(x in posX - 1..posX + 1) {
+			for(y in posY - 1..posY + 1) {
+				// On vérifie que la Cellule voisine est dans le tableau, différente de la Cellule de base et si elle n'est pas déjà ouverte
+				if((x == posX && y == posY) || x < 0 || x >= this.sizeX || y < 0 || y >= this.sizeY) {
+					// Si non, on continue
+					continue
+				} else {
+					val cell = mines.get(x)?.get(y)
+					
+					if(cell != null) {
+						// On regarde si la Cellule voisine est flag ou non
+						if(cell.flag || cell.visible) {
+							// Si elle est flag, on ne l'ouvre pas et on continue
+							continue
+						} else {
+							// Si non, on l'ouvre
+							clickCellule(x, y);
+						}
+					}
+				}
+				
+			}
+		}
+	}
+	
+	/**
 	 * clickCellule(posX : int, posY : int) : lancement d'un clic sur la cellule
 	 * Clique sur la cellule de coordonées posX, posY et l'ouvre. Trois cas possibles :
 	 * 	- Si c'est une Mine -> on passe Mine.visible à true -> partie perdue
@@ -154,40 +222,40 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 	 */
 	fun clickCellule(posX : kotlin.Int, posY : kotlin.Int) {
 		
+		println("Appel sur ".plus(posX.toString()).plus("-").plus(posY.toString()))
+		
 		// On récupère la cellule aux coordonnées posX, posY
 		val cell : Cellule? = mines.get(posX)?.get(posY)
 		
-		// On la rend visible si elle n'est pas déjà visible ou flag
 		if(cell != null) {
-			if(cell.visible) 
-				return
-		}
-		
-		cell?.visible = true;
-				
-		// Dans le cas où c'est un Vide, on ouvre les Cellules voisines dans le tableau
-		if(cell?.toPrint == "-") {
-			for(x in posX - 1..posX + 1) {
-				for(y in posY - 1..posY + 1) {
-					
-					// On vérifie que la Cellule voisine est dans le tableau
-					if(x < 0 || x >= this.sizeX || y < 0 || y >= this.sizeY) {
+			// Si elle est déjà visible
+			if(cell.visible) {
+				println("Visible")
+				// On regarde si c'est un Nombre
+				if(cell.toPrint != "-" && cell.toPrint != "*") {
 						
-						// Si non, on continue
-						continue
+					// On vérifie le nombre de mines voisines et le nombre de flags posés
+					if(computeVoisins(posX, posY) == computeFlags(posX, posY)) {
+						println("J'ouvre les voisins")
+						
+						// Si égal, on ouvre les voisins
+						openVoisins(posX, posY)
 					} else {
-						
-						// On regarde si la Cellule voisine est flag ou non
-						if(cell.flag) {
-							
-							// Si elle est flag, on ne l'ouvre pas et on continue
-							return
-						} else {
-							
-							// Si non, on l'ouvre
-							clickCellule(x, y);
-						}
+						// Si non, on continue
+						return
 					}
+				// Si ce n'est pas un Nombre, on return
+				} else {
+					return
+				}
+			// Si elle n'est pas visible, on l'ouvre
+			} else {
+				println("Non visible")
+				cell.visible = true;
+						
+				// Dans le cas où c'est un Vide, on ouvre les Cellules voisines dans le tableau
+				if(cell.toPrint == "-") {
+					openVoisins(posX, posY)
 				}
 			}
 		}
