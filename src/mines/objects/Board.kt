@@ -143,6 +143,41 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 	}
 	
 	/**
+	 * clickCellule(posX : int, posY : int) : lancement d'un clic sur la cellule
+	 * Clique sur la cellule de coordonées posX, posY et l'ouvre. Trois cas possibles :
+	 * 	- Si c'est une Mine -> on passe Mine.visible à true -> partie perdue
+	 *	- Si c'est un Nombre -> on l'ouvre 
+	 *	- Si c'est un Vide -> on ouvre toutes les Cellules voisines
+	 */
+	fun clickCellule(posX : kotlin.Int, posY : kotlin.Int) {
+		
+		// On récupère la cellule aux coordonnées posX, posY
+		val cell : Cellule? = mines.get(posX)?.get(posY)
+		
+		// On la rend visible
+		cell?.visible = true;
+		
+		// Dans le cas où c'est un Vide, on ouvre les cases voisines dans le tableau
+		if(cell?.toPrint == " ") {
+			for(x in posX - 1..posX + 1) {
+				for(y in posY - 1..posY + 1) {
+					
+					// On vérifie que la Cellule est dans le tableau
+					if(x < 0 || x >= this.sizeX || y < 0 || y >= this.sizeY) {
+						
+						// Si non, on continue
+						continue
+					} else {
+						
+						// Si oui, on l'ouvre
+						clickCellule(x, y);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
 	 * toString() : rÃ©Ã©criture de la fonction toString
 	 * Affiche une copie du plateau
 	 */

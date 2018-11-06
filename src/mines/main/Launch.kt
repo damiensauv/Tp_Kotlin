@@ -4,7 +4,7 @@ import mines.objects.Board
 import java.util.Scanner
 
 fun main(args: Array<String>) {
-	val b : Board = Board(12, 12)
+	val b : Board = Board(8, 8)
 	b.toString()
 	println()
 	
@@ -15,13 +15,13 @@ fun main(args: Array<String>) {
 		
 		print("X : ")
 		val inputX : kotlin.Int = sc.nextInt()
-		if(inputX < 0 || inputX > 7) {
+		if(inputX < 0 || inputX > b.sizeX) {
 			break
 		}
 		
 		print("Y : ")
 		val inputY : kotlin.Int = sc.nextInt()
-		if(inputY < 0 || inputY > 7) {
+		if(inputY < 0 || inputY > b.sizeY) {
 			break
 		}
 		
