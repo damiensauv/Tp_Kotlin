@@ -6,19 +6,19 @@ abstract class Cellule {
 	abstract var toPrint : kotlin.String
 }
 
-data class Vide (
+class Vide (
 	override var posX : kotlin.Int,
 	override var posY : kotlin.Int,
 	override var toPrint : kotlin.String = " "
 ) : Cellule()
 
-data class Nombre (
+class Nombre (
 	override var posX : kotlin.Int,
 	override var posY : kotlin.Int,
 	override var toPrint : kotlin.String
 ) : Cellule()
 
-data class Mine (
+class Mine (
 	override var posX : kotlin.Int,
 	override var posY : kotlin.Int,
 	override var toPrint : kotlin.String = "*"
