@@ -222,22 +222,17 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 	 */
 	fun clickCellule(posX : kotlin.Int, posY : kotlin.Int) {
 		
-		println("Appel sur ".plus(posX.toString()).plus("-").plus(posY.toString()))
-		
 		// On récupère la cellule aux coordonnées posX, posY
 		val cell : Cellule? = mines.get(posX)?.get(posY)
 		
 		if(cell != null) {
 			// Si elle est déjà visible
 			if(cell.visible) {
-				println("Visible")
 				// On regarde si c'est un Nombre
 				if(cell.toPrint != "-" && cell.toPrint != "*") {
 						
 					// On vérifie le nombre de mines voisines et le nombre de flags posés
 					if(computeVoisins(posX, posY) == computeFlags(posX, posY)) {
-						println("J'ouvre les voisins")
-						
 						// Si égal, on ouvre les voisins
 						openVoisins(posX, posY)
 					} else {
@@ -250,7 +245,6 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 				}
 			// Si elle n'est pas visible, on l'ouvre
 			} else {
-				println("Non visible")
 				cell.visible = true;
 						
 				// Dans le cas où c'est un Vide, on ouvre les Cellules voisines dans le tableau
