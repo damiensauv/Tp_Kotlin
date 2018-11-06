@@ -148,38 +148,62 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 	 * 	- Si c'est une Mine -> on passe Mine.visible à true -> partie perdue
 	 *	- Si c'est un Nombre -> on l'ouvre 
 	 *	- Si c'est un Vide -> on ouvre toutes les Cellules voisines
+	 * Si on clique sur un Nombre déjà ouvert, on va compter le nombre de Cellules flag :
+	 * 	- Si il est égal au nombre de voisins du Nombre, on ouvre les Cellules voisines non flag
+	 * 	- Si non, on ne fait rien
 	 */
 	fun clickCellule(posX : kotlin.Int, posY : kotlin.Int) {
 		
 		// On récupère la cellule aux coordonnées posX, posY
 		val cell : Cellule? = mines.get(posX)?.get(posY)
 		
-		// On la rend visible
+		// On la rend visible si elle n'est pas déjà visible ou flag
 		if(cell != null) {
 			if(cell.visible) 
 				return
 		}
 		
 		cell?.visible = true;
-		
-		// Dans le cas où c'est un Vide, on ouvre les cases voisines dans le tableau
+				
+		// Dans le cas où c'est un Vide, on ouvre les Cellules voisines dans le tableau
 		if(cell?.toPrint == "-") {
 			for(x in posX - 1..posX + 1) {
 				for(y in posY - 1..posY + 1) {
 					
-					// On vérifie que la Cellule est dans le tableau
+					// On vérifie que la Cellule voisine est dans le tableau
 					if(x < 0 || x >= this.sizeX || y < 0 || y >= this.sizeY) {
 						
 						// Si non, on continue
 						continue
 					} else {
 						
-						// Si oui, on l'ouvre
-						clickCellule(x, y);
+						// On regarde si la Cellule voisine est flag ou non
+						if(cell.flag) {
+							
+							// Si elle est flag, on ne l'ouvre pas et on continue
+							return
+						} else {
+							
+							// Si non, on l'ouvre
+							clickCellule(x, y);
+						}
 					}
 				}
 			}
 		}
+	}
+	
+	/**
+	 * flagCellule(posX : int, posY : int) : Pose un flag sur une cellule
+	 * On passe le Cellule.flag = true pour la Cellule aux coordonées posX, posY
+	 */
+	fun flagCellule(posX : kotlin.Int, posY : kotlin.Int) {
+		
+		// On récupère la cellule aux coordonnées posX, posY
+		val cell : Cellule? = mines.get(posX)?.get(posY)
+		
+		// On passe le flag de la Cellule à true
+		cell?.flag = true;
 	}
 	
 	/**
@@ -199,6 +223,8 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 				if(cell != null) {
 					if(cell.visible) {
 						print(cell.toPrint)
+					} else if(cell.flag){
+						print("!")
 					} else {
 						print(" ")
 					}

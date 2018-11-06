@@ -9,6 +9,7 @@ abstract class Cellule {
 	abstract var posY : kotlin.Int
 	abstract var toPrint : kotlin.String
 	var visible : kotlin.Boolean = false
+	var flag : kotlin.Boolean = false
 }
 
 /**

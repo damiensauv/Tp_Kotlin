@@ -10,39 +10,68 @@ fun main(args: Array<String>) {
 		b.toString()
 		println()
 		
-		println("Quelle case à ouvrir ?")
-		
 		val sc = Scanner(System.`in`)
 		
-		print("X : ")
-		val inputX : kotlin.Int = sc.nextInt()
-		if(inputX < 0 || inputX > b.sizeX) {
-			break
-		}
+		println("Que voulez vous faire ?")
+		println("1 - Cliquer sur une case")
+		println("2 - Placer un drapeau")
 		
-		print("Y : ")
-		val inputY : kotlin.Int = sc.nextInt()
-		if(inputY < 0 || inputY > b.sizeY) {
-			break
-		}
+		val inputChoix = sc.nextInt()
 		
-		println()
-		b.clickCellule(inputX, inputY)
-		
-		if(b.isWin()) {
-			println("Bravo !")
+		if(inputChoix == 1) {
+			println("Quelle case à ouvrir ?")
+					
+			print("X : ")
+			val inputX : kotlin.Int = sc.nextInt()
+			if(inputX < 0 || inputX > b.sizeX) {
+				break
+			}
+			
+			print("Y : ")
+			val inputY : kotlin.Int = sc.nextInt()
+			if(inputY < 0 || inputY > b.sizeY) {
+				break
+			}
 			
 			println()
-			println()
-			b.toString()
-			break;
-		} else if(b.isLost()) {
-			println("Perdu !")
+			b.clickCellule(inputX, inputY)
+			
+			if(b.isWin()) {
+				println("Bravo !")
+				
+				println()
+				println()
+				b.toString()
+				return;
+			} else if(b.isLost()) {
+				println("Perdu !")
+				
+				println()
+				println()
+				b.toString()	
+				return;
+			}
+		} else if(inputChoix == 2){
+			println("Sur quelle case ?")
+					
+			print("X : ")
+			val inputX : kotlin.Int = sc.nextInt()
+			if(inputX < 0 || inputX > b.sizeX) {
+				break
+			}
+			
+			print("Y : ")
+			val inputY : kotlin.Int = sc.nextInt()
+			if(inputY < 0 || inputY > b.sizeY) {
+				break
+			}
 			
 			println()
+			b.flagCellule(inputX, inputY)
+		} else {
 			println()
-			b.toString()	
-			break;
+			println("Veuillez entrer un choix valide")
+			println()
 		}
 	}
 }
