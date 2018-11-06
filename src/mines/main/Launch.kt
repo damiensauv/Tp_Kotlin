@@ -24,13 +24,13 @@ fun main(args: Array<String>) {
 			print("X : ")
 			val inputX : kotlin.Int = sc.nextInt()
 			if(inputX < 0 || inputX > b.sizeX) {
-				break
+				continue
 			}
 			
 			print("Y : ")
 			val inputY : kotlin.Int = sc.nextInt()
 			if(inputY < 0 || inputY > b.sizeY) {
-				break
+				continue
 			}
 			
 			println()
@@ -57,13 +57,13 @@ fun main(args: Array<String>) {
 			print("X : ")
 			val inputX : kotlin.Int = sc.nextInt()
 			if(inputX < 0 || inputX > b.sizeX) {
-				break
+				continue
 			}
 			
 			print("Y : ")
 			val inputY : kotlin.Int = sc.nextInt()
 			if(inputY < 0 || inputY > b.sizeY) {
-				break
+				continue
 			}
 			
 			println()
