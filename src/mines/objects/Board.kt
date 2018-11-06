@@ -41,33 +41,27 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 				val random = (1..2).random();
 				when {
 					// Random = 1 -> Nombre
-					random == 1 -> tableX.plusElement(Nombre(x, y, "0"))
+					random == 1 -> tableX.set(y, Nombre(x, y, "0"))
 					// Random = 2 -> Mine
-					random == 2 -> tableX.plusElement(Mine(x, y))
+					random == 2 -> tableX.set(y, Mine(x, y))
 				}
 			}
-			table.plusElement(tableX)
+			table.set(x, tableX)
 		}
 		
 		return table;
 	}
 	
 	override fun toString() : String {
-		val strLine : String = ""
-		val strResult : String = ""
-		
 		for(posX in 0..this.sizeX-1) {
-			for(posY in 0..this.sizeY-1) {
-				strLine.plus("|");
-				var c : Cellule? = mines.get(posX)?.get(posY)
-				strLine.plus(c!!.toPrint)
-				strLine.plus("|");
+			for(posY in 0..this.sizeY - 1) {
+				print("|")
+				print(mines.get(posX)?.get(posY)?.toPrint)	
+				print("|")
 			}
-			strLine.plus("\n")
-			strResult.plus(strLine);
+			println()
 		}
-		
-		return strResult;
+		return "";
 	}
 	
 	inline fun <reified L : Any, reified R : Any> isSubClassOf(): Boolean {
