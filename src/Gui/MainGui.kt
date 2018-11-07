@@ -1,7 +1,17 @@
 package Gui
 
+import java.awt.Color
 import java.awt.EventQueue
+import java.awt.GridLayout
+import javax.swing.BorderFactory
 import javax.swing.JFrame
+import javax.swing.JPanel
+import jdk.nashorn.internal.codegen.ObjectClassGenerator.pack
+import java.awt.Dimension
+import javax.swing.JButton
+
+
+
 
 class MainGui(title: String) : JFrame() {
 
@@ -14,7 +24,7 @@ class MainGui(title: String) : JFrame() {
         setTitle(title)
 
         defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-        setSize(300, 200)
+        setSize(800, 800)
         setLocationRelativeTo(null)
     }
 }
@@ -22,6 +32,20 @@ class MainGui(title: String) : JFrame() {
 private fun createAndShowGUI() {
 
     val frame = MainGui("Simple")
+
+    val buttonPanel = JPanel()
+    val containerPanel = JPanel()
+    buttonPanel.layout = GridLayout(10, 10)
+
+    for (i in 0..99){
+        buttonPanel.add(JButton(""))
+    }
+
+    buttonPanel.preferredSize = Dimension(800, 800)
+    containerPanel.add(buttonPanel)
+
+    frame.contentPane.add(containerPanel)
+    frame.pack()
     frame.isVisible = true
 }
 
