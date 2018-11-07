@@ -1,16 +1,11 @@
 package Gui
 
-import java.awt.Color
+import java.awt.Dimension
 import java.awt.EventQueue
 import java.awt.GridLayout
-import javax.swing.BorderFactory
+import javax.swing.JButton
 import javax.swing.JFrame
 import javax.swing.JPanel
-import jdk.nashorn.internal.codegen.ObjectClassGenerator.pack
-import java.awt.Dimension
-import javax.swing.JButton
-
-
 
 
 class MainGui(title: String) : JFrame() {
@@ -37,7 +32,7 @@ private fun createAndShowGUI() {
     val containerPanel = JPanel()
     buttonPanel.layout = GridLayout(10, 10)
 
-    for (i in 0..99){
+    for (i in 0..99) {
         buttonPanel.add(JButton(""))
     }
 
