@@ -28,6 +28,19 @@ class MainGui(title: String) : JFrame() {
     }
 }
 
+private fun updateGui(board: Board, table: Array<Array<CellGui?>?>) {
+
+    val mines = board.mines
+
+    for (x in 0 until 10) {
+        for (y in 0 until 10) {
+            if (mines[x]?.get(y)!!.visible) {
+                table.get(x)?.get(y)?.button?.text = mines[x]?.get(y)?.toPrint
+            }
+        }
+    }
+}
+
 private fun createAndShowGUI() {
 
     val frame = MainGui("Simple")
@@ -49,20 +62,22 @@ private fun createAndShowGUI() {
         for (y in 0 until 10) {
             val cg: CellGui = CellGui()
 
-            cg.cellule  = mines[x]?.get(y)!!
+            cg.cellule = mines[x]?.get(y)!!
 
             val but = JButton("")
             but.addMouseListener(object : MouseAdapter() {
                 override fun mouseClicked(e: MouseEvent?) {
                     if (SwingUtilities.isLeftMouseButton(e)) {
-                        System.out.println("Left")
                         val b: JButton = e?.source as JButton
-
+                        board.clickCellule(x, y)
+                        updateGui(board, table)
                     }
                     if (SwingUtilities.isRightMouseButton(e)) {
-                        System.out.println("Rigth")
+
+
                     }
-                }})
+                }
+            })
 
             cg.button = but
             tableX[y] = cg
@@ -71,7 +86,7 @@ private fun createAndShowGUI() {
         table[x] = tableX
     }
 
-    for (x in 0 until 10){
+    for (x in 0 until 10) {
         for (y in 0 until 10) {
             buttonPanel.add(table.get(x)?.get(y)?.button)
         }
