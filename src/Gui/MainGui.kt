@@ -1,6 +1,7 @@
 package Gui
 
 import mines.objects.Board
+import java.awt.Color
 import java.awt.Dimension
 import java.awt.EventQueue
 import java.awt.GridLayout
@@ -10,6 +11,11 @@ import javax.swing.JButton
 import javax.swing.JFrame
 import javax.swing.JPanel
 import javax.swing.SwingUtilities
+import javax.swing.JColorChooser.createDialog
+import javax.swing.JDialog
+import javax.swing.JOptionPane
+
+
 
 
 class MainGui(title: String) : JFrame() {
@@ -36,9 +42,21 @@ private fun updateGui(board: Board, table: Array<Array<CellGui?>?>) {
         for (y in 0 until 10) {
             if (mines[x]?.get(y)!!.visible) {
                 table.get(x)?.get(y)?.button?.text = mines[x]?.get(y)?.toPrint
+                table.get(x)?.get(y)?.button?.background = Color.WHITE
+            } else if (mines[x]?.get(y)!!.flag) {
+                table.get(x)?.get(y)?.button?.background = Color.GREEN
             }
         }
     }
+}
+
+private fun dialog(msg : String){
+
+    val pane = JOptionPane()
+    pane.message = msg
+    val d = pane.createDialog(null, "Demineur")
+    d.isVisible = true
+
 }
 
 private fun createAndShowGUI() {
@@ -49,7 +67,7 @@ private fun createAndShowGUI() {
     val board: Board = Board(10, 10)
     buttonPanel.layout = GridLayout(10, 10)
 
-    var table: Array<Array<CellGui?>?>
+    val table: Array<Array<CellGui?>?>
     var tableX: Array<CellGui?>
     table = arrayOfNulls(10)
 
@@ -71,10 +89,17 @@ private fun createAndShowGUI() {
                         val b: JButton = e?.source as JButton
                         board.clickCellule(x, y)
                         updateGui(board, table)
+
+                        if (board.isWin()){
+                            dialog("Gagnée")
+                        } else if(board.isLost()){
+                            dialog("Perdu")
+                        }
                     }
                     if (SwingUtilities.isRightMouseButton(e)) {
-
-
+                        val b: JButton = e?.source as JButton
+                        board.flagCellule(x, y)
+                        updateGui(board, table)
                     }
                 }
             })
