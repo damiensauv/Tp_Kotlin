@@ -7,15 +7,7 @@ import java.awt.EventQueue
 import java.awt.GridLayout
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
-import javax.swing.JButton
-import javax.swing.JFrame
-import javax.swing.JPanel
-import javax.swing.SwingUtilities
-import javax.swing.JColorChooser.createDialog
-import javax.swing.JDialog
-import javax.swing.JOptionPane
-
-
+import javax.swing.*
 
 
 class MainGui(title: String) : JFrame() {
@@ -40,17 +32,19 @@ private fun updateGui(board: Board, table: Array<Array<CellGui?>?>) {
 
     for (x in 0 until 10) {
         for (y in 0 until 10) {
-            if (mines[x]?.get(y)!!.visible) {
+            if (mines[x]?.get(y)!!.visible && mines[x]?.get(y)!!.toPrint != "*") {
                 table.get(x)?.get(y)?.button?.text = mines[x]?.get(y)?.toPrint
                 table.get(x)?.get(y)?.button?.background = Color.WHITE
             } else if (mines[x]?.get(y)!!.flag) {
                 table.get(x)?.get(y)?.button?.background = Color.GREEN
+            } else if (mines[x]?.get(y)!!.toPrint == "*" && board.isLost()) {
+                table.get(x)?.get(y)?.button?.background = Color.RED
             }
         }
     }
 }
 
-private fun dialog(msg : String){
+private fun dialog(msg: String) {
 
     val pane = JOptionPane()
     pane.message = msg
@@ -90,9 +84,9 @@ private fun createAndShowGUI() {
                         board.clickCellule(x, y)
                         updateGui(board, table)
 
-                        if (board.isWin()){
+                        if (board.isWin()) {
                             dialog("Gagnée")
-                        } else if(board.isLost()){
+                        } else if (board.isLost()) {
                             dialog("Perdu")
                         }
                     }

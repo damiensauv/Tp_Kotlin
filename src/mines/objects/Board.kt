@@ -102,7 +102,7 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 	
 	/**
 	 * computeFlags(posX : int, posY : int) : calcul le nombre de drapeaux sur les cases voisines
-	 * On regarde sur les cases voisines si le Cellule.flag est à true
+	 * On regarde sur les cases voisines si le Cellule.flag est ï¿½ true
 	 *
 	 * Exemple (X = case Ã©tudiÃ©e, ! = Flag)
 	 *
@@ -182,12 +182,12 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 	
 	/**
 	 * openVoisins(posX : int, posY : int) : Ouverture des cases voisines d'une Cellule
-	 * On ouvre toutes les cases autour de la Cellule aux coordonées posX, posY
+	 * On ouvre toutes les cases autour de la Cellule aux coordonï¿½es posX, posY
 	 */
 	fun openVoisins(posX : kotlin.Int, posY : kotlin.Int) {
 		for(x in posX - 1..posX + 1) {
 			for(y in posY - 1..posY + 1) {
-				// On vérifie que la Cellule voisine est dans le tableau, différente de la Cellule de base et si elle n'est pas déjà ouverte
+				// On vï¿½rifie que la Cellule voisine est dans le tableau, diffï¿½rente de la Cellule de base et si elle n'est pas dï¿½jï¿½ ouverte
 				if((x == posX && y == posY) || x < 0 || x >= this.sizeX || y < 0 || y >= this.sizeY) {
 					// Si non, on continue
 					continue
@@ -212,28 +212,28 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 	
 	/**
 	 * clickCellule(posX : int, posY : int) : lancement d'un clic sur la cellule
-	 * Clique sur la cellule de coordonées posX, posY et l'ouvre. Trois cas possibles :
-	 * 	- Si c'est une Mine -> on passe Mine.visible à true -> partie perdue
+	 * Clique sur la cellule de coordonï¿½es posX, posY et l'ouvre. Trois cas possibles :
+	 * 	- Si c'est une Mine -> on passe Mine.visible ï¿½ true -> partie perdue
 	 *	- Si c'est un Nombre -> on l'ouvre 
 	 *	- Si c'est un Vide -> on ouvre toutes les Cellules voisines
-	 * Si on clique sur un Nombre déjà ouvert, on va compter le nombre de Cellules flag :
-	 * 	- Si il est égal au nombre de voisins du Nombre, on ouvre les Cellules voisines non flag
+	 * Si on clique sur un Nombre dï¿½jï¿½ ouvert, on va compter le nombre de Cellules flag :
+	 * 	- Si il est ï¿½gal au nombre de voisins du Nombre, on ouvre les Cellules voisines non flag
 	 * 	- Si non, on ne fait rien
 	 */
 	fun clickCellule(posX : kotlin.Int, posY : kotlin.Int) {
 		
-		// On récupère la cellule aux coordonnées posX, posY
+		// On rï¿½cupï¿½re la cellule aux coordonnï¿½es posX, posY
 		val cell : Cellule? = mines.get(posX)?.get(posY)
 		
 		if(cell != null) {
-			// Si elle est déjà visible
+			// Si elle est dï¿½jï¿½ visible
 			if(cell.visible) {
 				// On regarde si c'est un Nombre
 				if(cell.toPrint != "-" && cell.toPrint != "*") {
 						
-					// On vérifie le nombre de mines voisines et le nombre de flags posés
+					// On vï¿½rifie le nombre de mines voisines et le nombre de flags posï¿½s
 					if(computeVoisins(posX, posY) == computeFlags(posX, posY)) {
-						// Si égal, on ouvre les voisins
+						// Si ï¿½gal, on ouvre les voisins
 						openVoisins(posX, posY)
 					} else {
 						// Si non, on continue
@@ -247,7 +247,7 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 			} else {
 				cell.visible = true;
 						
-				// Dans le cas où c'est un Vide, on ouvre les Cellules voisines dans le tableau
+				// Dans le cas oï¿½ c'est un Vide, on ouvre les Cellules voisines dans le tableau
 				if(cell.toPrint == "-") {
 					openVoisins(posX, posY)
 				}
@@ -257,14 +257,14 @@ data class Board(val sizeX: kotlin.Int, val sizeY: kotlin.Int) {
 	
 	/**
 	 * flagCellule(posX : int, posY : int) : Pose un flag sur une cellule
-	 * On passe le Cellule.flag = true pour la Cellule aux coordonées posX, posY
+	 * On passe le Cellule.flag = true pour la Cellule aux coordonï¿½es posX, posY
 	 */
 	fun flagCellule(posX : kotlin.Int, posY : kotlin.Int) {
 		
-		// On récupère la cellule aux coordonnées posX, posY
+		// On rï¿½cupï¿½re la cellule aux coordonnï¿½es posX, posY
 		val cell : Cellule? = mines.get(posX)?.get(posY)
 		
-		// On passe le flag de la Cellule à true
+		// On passe le flag de la Cellule ï¿½ true
 		cell?.flag = true;
 	}
 	
