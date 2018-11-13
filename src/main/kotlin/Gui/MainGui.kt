@@ -43,7 +43,7 @@ private fun updateGui(board: Board, table: Array<Array<CellGui?>?>) {
 
 private fun dialog(msg: String, frame: MainGui) {
 
-    val options1 = arrayOf<Any>("Rejouer", "Quittez")
+    val options1 = arrayOf<Any>("Rejouer", "Quitter")
     val panel = JPanel()
     panel.add(JLabel("$msg voulez-vous recommencez ?"))
 
@@ -63,7 +63,7 @@ private fun dialog(msg: String, frame: MainGui) {
 
 private fun createAndShowGUI() {
 
-    val frame = MainGui("Demineur")
+    val frame = MainGui("Démineur")
     val buttonPanel = JPanel()
     val containerPanel = JPanel()
     val board = Board(10, 10)
@@ -74,7 +74,7 @@ private fun createAndShowGUI() {
 
     val mines = board.mines
 
-    // Init the gris of Game
+    // Init the grid of Game
     for (x in 0 until 10) {
         tableX = arrayOfNulls(10)
 
