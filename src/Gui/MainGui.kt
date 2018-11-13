@@ -8,13 +8,6 @@ import java.awt.GridLayout
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.*
-import javax.swing.JOptionPane
-import javax.swing.JButton
-import javax.swing.JLabel
-import javax.swing.JPanel
-
-
-
 
 class MainGui(title: String) : JFrame() {
 
@@ -23,9 +16,7 @@ class MainGui(title: String) : JFrame() {
     }
 
     private fun createUI(title: String) {
-
         setTitle(title)
-
         defaultCloseOperation = JFrame.EXIT_ON_CLOSE
         setSize(800, 800)
         setLocationRelativeTo(null)
@@ -36,15 +27,15 @@ private fun updateGui(board: Board, table: Array<Array<CellGui?>?>) {
 
     val mines = board.mines
 
-    for (x in 0 until 10) {
-        for (y in 0 until 10) {
+    for (x in 0 until mines.size) {
+        for (y in 0 until mines[x]?.size!!) {
             if (mines[x]?.get(y)!!.visible && mines[x]?.get(y)!!.toPrint != "*") {
-                table.get(x)?.get(y)?.button?.text = mines[x]?.get(y)?.toPrint
-                table.get(x)?.get(y)?.button?.background = Color.WHITE
+                table[x]?.get(y)?.button?.text = mines[x]?.get(y)?.toPrint
+                table[x]?.get(y)?.button?.background = Color.WHITE
             } else if (mines[x]?.get(y)!!.flag) {
-                table.get(x)?.get(y)?.button?.background = Color.GREEN
+                table[x]?.get(y)?.button?.background = Color.GREEN
             } else if (mines[x]?.get(y)!!.toPrint == "*" && board.isLost()) {
-                table.get(x)?.get(y)?.button?.background = Color.RED
+                table[x]?.get(y)?.button?.background = Color.RED
             }
         }
     }
@@ -53,12 +44,11 @@ private fun updateGui(board: Board, table: Array<Array<CellGui?>?>) {
 private fun dialog(msg: String, frame: MainGui) {
 
     val options1 = arrayOf<Any>("Rejouer", "Quittez")
-
     val panel = JPanel()
     panel.add(JLabel("$msg voulez-vous recommencez ?"))
 
     val result = JOptionPane.showOptionDialog(
-        null, panel, "Enter a Number",
+        null, panel, "Demineur",
         JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null,
         options1, null
     )
@@ -73,15 +63,14 @@ private fun dialog(msg: String, frame: MainGui) {
 
 private fun createAndShowGUI() {
 
-    val frame = MainGui("Simple")
+    val frame = MainGui("Demineur")
     val buttonPanel = JPanel()
     val containerPanel = JPanel()
     val board = Board(10, 10)
     buttonPanel.layout = GridLayout(10, 10)
 
-    val table: Array<Array<CellGui?>?>
+    val table: Array<Array<CellGui?>?> = arrayOfNulls(10)
     var tableX: Array<CellGui?>
-    table = arrayOfNulls(10)
 
     val mines = board.mines
 
