@@ -18,7 +18,7 @@ class MainGui(title: String) : JFrame() {
     private fun createUI(title: String) {
         setTitle(title)
         defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-        setSize(800, 800)
+        setSize(700, 700)
         setLocationRelativeTo(null)
     }
 }
@@ -116,7 +116,7 @@ private fun createAndShowGUI() {
         }
     }
 
-    buttonPanel.preferredSize = Dimension(800, 800)
+    buttonPanel.preferredSize = Dimension(700, 700)
     containerPanel.add(buttonPanel)
 
     frame.contentPane.add(containerPanel)
