@@ -8,6 +8,12 @@ import java.awt.GridLayout
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.*
+import javax.swing.JOptionPane
+import javax.swing.JButton
+import javax.swing.JLabel
+import javax.swing.JPanel
+
+
 
 
 class MainGui(title: String) : JFrame() {
@@ -44,13 +50,25 @@ private fun updateGui(board: Board, table: Array<Array<CellGui?>?>) {
     }
 }
 
-private fun dialog(msg: String) {
+private fun dialog(msg: String, frame: MainGui) {
 
-    val pane = JOptionPane()
-    pane.message = msg
-    val d = pane.createDialog(null, "Demineur")
-    d.isVisible = true
+    val options1 = arrayOf<Any>("Rejouer", "Quittez")
 
+    val panel = JPanel()
+    panel.add(JLabel("$msg voulez-vous recommencez ?"))
+
+    val result = JOptionPane.showOptionDialog(
+        null, panel, "Enter a Number",
+        JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+        options1, null
+    )
+
+    if (result == JOptionPane.YES_OPTION) {
+        frame.dispose()
+        createAndShowGUI()
+    } else if (result == JOptionPane.NO_OPTION) {
+        System.exit(0);
+    }
 }
 
 private fun createAndShowGUI() {
@@ -58,7 +76,7 @@ private fun createAndShowGUI() {
     val frame = MainGui("Simple")
     val buttonPanel = JPanel()
     val containerPanel = JPanel()
-    val board: Board = Board(10, 10)
+    val board = Board(10, 10)
     buttonPanel.layout = GridLayout(10, 10)
 
     val table: Array<Array<CellGui?>?>
@@ -69,10 +87,10 @@ private fun createAndShowGUI() {
 
     // Init the gris of Game
     for (x in 0 until 10) {
-        tableX = arrayOfNulls<CellGui>(10)
+        tableX = arrayOfNulls(10)
 
         for (y in 0 until 10) {
-            val cg: CellGui = CellGui()
+            val cg = CellGui()
 
             cg.cellule = mines[x]?.get(y)!!
 
@@ -80,18 +98,16 @@ private fun createAndShowGUI() {
             but.addMouseListener(object : MouseAdapter() {
                 override fun mouseClicked(e: MouseEvent?) {
                     if (SwingUtilities.isLeftMouseButton(e)) {
-                        val b: JButton = e?.source as JButton
                         board.clickCellule(x, y)
                         updateGui(board, table)
 
                         if (board.isWin()) {
-                            dialog("Gagnée")
+                            dialog("Gagnée", frame)
                         } else if (board.isLost()) {
-                            dialog("Perdu")
+                            dialog("Perdu", frame)
                         }
                     }
                     if (SwingUtilities.isRightMouseButton(e)) {
-                        val b: JButton = e?.source as JButton
                         board.flagCellule(x, y)
                         updateGui(board, table)
                     }
